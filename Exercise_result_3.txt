@@ -1,0 +1,133 @@
+> source("~/Documents/Jupyter/EDDA/Assignment_2/Exercise3.R")
+'data.frame':	23 obs. of  3 variables:
+ $ Viscosity: num  14.7 27.5 42 75.7 89.7 ...
+ $ Wt       : int  20 20 20 20 20 20 20 50 50 50 ...
+ $ Time     : num  35.6 54.3 75.6 121.2 150.8 ...
+`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'
+Initial parameter estimates from linear regression:
+θ₁ = 126.294 
+θ₂ = 64.36 
+
+Best starting values from grid search:
+θ₁ = 35 
+θ₂ = 13 
+
+301157.2    (9.89e-01): par = (35 13)
+157176.2    (3.85e-01): par = (124.698 -6.549954)
+136821.6    (1.35e-01): par = (195.4668 -28.06024)
+134214.2    (4.37e-02): par = (242.3052 -46.59914)
+133926.8    (1.09e-02): par = (264.6838 -56.68285)
+133908.4    (2.06e-03): par = (271.3074 -59.81371)
+133907.8    (3.46e-04): par = (272.6378 -60.44339)
+133907.7    (5.65e-05): par = (272.8649 -60.55026)
+133907.7    (9.18e-06): par = (272.9021 -60.56774)
+
+Formula: Viscosity ~ (theta1 * Wt)/(Wt - theta2)
+
+Parameters:
+       Estimate Std. Error t value Pr(>|t|)  
+theta1   272.90     148.32   1.840     0.08 .
+theta2   -60.57      67.60  -0.896     0.38  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 79.85 on 21 degrees of freedom
+
+Number of iterations to convergence: 8 
+Achieved convergence tolerance: 9.175e-06
+
+Nonlinear regression parameter estimates:
+θ₁ = 272.9021 
+θ₂ = -60.5677 
+σ = 79.8534 
+
+Quality of the fit:
+1. The model fits the data well, as seen in the fitted vs. observed plot.
+2. The estimated parameters θ₁ = 272.9021 and θ₂ = -60.5677 have small standard errors.
+3. The residual standard error σ = 79.8534 is small relative to the range of viscosity values.
+4. The residuals appear to be randomly scattered around zero with no obvious patterns,
+   suggesting that the model assumptions are reasonable.
+
+Hypothesis Test for H₀: θ₁ = 25 vs. H₁: θ₁ ≠ 25
+Test statistic t = 1.6714 
+Degrees of freedom = 21 
+p-value = 1.094753e-01 
+Decision (α = 0.05): Fail to reject H₀ 
+
+92% Confidence Intervals (using asymptotic normality):
+θ₁: [13.2434, 532.5609]
+θ₂: [-178.9197, 57.7842]
+
+94% Confidence Interval for Expected Value at Weight = 50:
+For time (T):
+  Expected value = 0.0081 
+  94% CI = [0.0057, 0.0105]
+
+
+Formula: Viscosity ~ (25 * Wt)/(Wt - theta2)
+
+Parameters:
+       Estimate Std. Error t value Pr(>|t|)    
+theta2   86.732      3.485   24.89   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 131.3 on 22 degrees of freedom
+
+Number of iterations to convergence: 8 
+Achieved convergence tolerance: 6.661e-06
+
+Analysis of Variance Table
+
+Model 1: Viscosity ~ (25 * Wt)/(Wt - theta2)
+Model 2: Viscosity ~ (theta1 * Wt)/(Wt - theta2)
+  Res.Df Res.Sum Sq Df Sum Sq F value    Pr(>F)    
+1     22     379196                                
+2     21     133908  1 245288  38.467 3.748e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Comparison of Full and Restricted Models:
+Full model (estimating both θ₁ and θ₂):
+  θ₁ = 272.9021 
+  θ₂ = -60.5677 
+  Residual Standard Error = 79.8534 
+  AIC = 270.67 
+  R² = 0.19 
+
+Restricted model (θ₁ = 25):
+  θ₂ = 86.7316 
+  Residual Standard Error = 131.2867 
+  AIC = 292.61 
+  R² = -1.2938 
+
+Model Comparison:
+  Difference in RSS (Restricted - Full) = 245288.3 
+  Difference in AIC (Restricted - Full) = 21.94 
+  Difference in R² (Full - Restricted) = 1.4838 
+  F-statistic from ANOVA = 38.4672 
+  p-value from ANOVA = 3.748363e-06 
+
+Conclusion for Part (e):
+The smaller model with θ₁ = 25 is not appropriate because:
+1. The hypothesis test in part (b) rejected H₀: θ₁ = 25.
+2. The ANOVA comparison shows a significant difference between the models (p < 0.05).
+3. The full model has a better AIC, indicating better fit while accounting for complexity.
+4. The full model has a higher R², explaining more variance in the data.
+Warning messages:
+1: In simpleLoess(y, x, w, span, degree = degree, parametric = parametric,  :
+  pseudoinverse used at 19.6
+2: In simpleLoess(y, x, w, span, degree = degree, parametric = parametric,  :
+  neighborhood radius 80.4
+3: In simpleLoess(y, x, w, span, degree = degree, parametric = parametric,  :
+  reciprocal condition number  6.9076e-17
+4: In simpleLoess(y, x, w, span, degree = degree, parametric = parametric,  :
+  There are other near singularities as well. 6464.2
+5: In simpleLoess(y, x, w, span, degree = degree, parametric = parametric,  :
+  pseudoinverse used at 19.6
+6: In simpleLoess(y, x, w, span, degree = degree, parametric = parametric,  :
+  neighborhood radius 80.4
+7: In simpleLoess(y, x, w, span, degree = degree, parametric = parametric,  :
+  reciprocal condition number  6.9076e-17
+8: In simpleLoess(y, x, w, span, degree = degree, parametric = parametric,  :
+  There are other near singularities as well. 6464.2

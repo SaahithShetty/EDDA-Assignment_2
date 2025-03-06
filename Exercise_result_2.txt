@@ -1,0 +1,240 @@
+> source("~/Documents/Jupyter/EDDA/Assignment_2/Exercise2.R")
+'data.frame':	36 obs. of  9 variables:
+ $ miltcoup : int  5 6 2 0 1 3 1 2 3 0 ...
+ $ oligarchy: int  7 13 13 0 0 14 15 0 2 0 ...
+ $ pollib   : int  1 2 2 2 2 2 2 2 2 2 ...
+ $ parties  : int  34 62 10 34 5 14 27 4 27 37 ...
+ $ pctvote  : num  45.7 17.5 34.4 30.3 30.5 ...
+ $ popn     : num  4.6 8.8 5.3 11.6 0.361 3 5.5 0.458 2.2 11.7 ...
+ $ size     : num  113 274 28 475 4 ...
+ $ numelec  : int  8 5 3 14 2 6 4 6 10 12 ...
+ $ numregim : int  3 3 3 3 1 4 3 2 4 2 ...
+[1] "Correlation matrix:"
+          miltcoup oligarchy pollib parties pctvote  popn  size numelec numregim
+miltcoup      1.00      0.61  -0.34    0.31    0.01  0.36  0.14    0.03     0.26
+oligarchy     0.61      1.00  -0.13    0.16    0.01  0.35  0.30   -0.19     0.46
+pollib       -0.34     -0.13   1.00    0.17    0.20 -0.15 -0.18   -0.17    -0.16
+parties       0.31      0.16   0.17    1.00   -0.14 -0.08  0.07    0.33     0.19
+pctvote       0.01      0.01   0.20   -0.14    1.00 -0.17 -0.10    0.23     0.15
+popn          0.36      0.35  -0.15   -0.08   -0.17  1.00  0.43    0.06    -0.14
+size          0.14      0.30  -0.18    0.07   -0.10  0.43  1.00    0.21     0.02
+numelec       0.03     -0.19  -0.17    0.33    0.23  0.06  0.21    1.00     0.23
+numregim      0.26      0.46  -0.16    0.19    0.15 -0.14  0.02    0.23     1.00
+
+Call:
+glm(formula = miltcoup ~ oligarchy + pollib + parties + pctvote + 
+    popn + size + numelec + numregim, family = poisson(link = "log"), 
+    data = coup_data)
+
+Coefficients:
+                             Estimate Std. Error z value Pr(>|z|)   
+(Intercept)                -0.2334274  0.9976112  -0.234  0.81500   
+oligarchy                   0.0725658  0.0353457   2.053  0.04007 * 
+pollibLimited civil rights -1.1032439  0.6558114  -1.682  0.09252 . 
+pollibFull civil rights    -1.6903057  0.6766503  -2.498  0.01249 * 
+parties                     0.0312212  0.0111663   2.796  0.00517 **
+pctvote                     0.0154413  0.0101027   1.528  0.12641   
+popn                        0.0109586  0.0071490   1.533  0.12531   
+size                       -0.0002651  0.0002690  -0.985  0.32444   
+numelec                    -0.0296185  0.0696248  -0.425  0.67054   
+numregim                    0.2109432  0.2339330   0.902  0.36720   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 65.945  on 35  degrees of freedom
+Residual deviance: 28.249  on 26  degrees of freedom
+AIC: 113.06
+
+Number of Fisher Scoring iterations: 5
+
+Dispersion parameter: 1.043975 
+[1] "Variance Inflation Factors (check for multicollinearity):"
+              GVIF Df GVIF^(1/(2*Df))
+oligarchy 2.583471  1        1.607318
+pollib    3.172779  2        1.334627
+parties   1.851445  1        1.360678
+pctvote   1.516434  1        1.231436
+popn      3.136701  1        1.771073
+size      1.509383  1        1.228569
+numelec   2.527916  1        1.589942
+numregim  1.658918  1        1.287990
+Waiting for profiling to be done...
+[1] "Incidence Rate Ratios with 95% CI:"
+                             IRR 2.5 % 97.5 %
+(Intercept)                0.792 0.098  5.050
+oligarchy                  1.075 1.002  1.153
+pollibLimited civil rights 0.332 0.093  1.252
+pollibFull civil rights    0.184 0.048  0.708
+parties                    1.032 1.009  1.054
+pctvote                    1.016 0.996  1.036
+popn                       1.011 0.997  1.026
+size                       1.000 0.999  1.000
+numelec                    0.971 0.846  1.114
+numregim                   1.235 0.778  1.961
+
+Interpretation of Full Poisson Regression Model:
+Significant predictors (p < 0.05):
+- oligarchy: positive effect (IRR = 1.075)
+- pollibFull civil rights: negative effect (IRR = 0.184)
+- parties: positive effect (IRR = 1.032)
+
+A one-unit increase in oligarchy is associated with a 7.5% change in the expected count of military coups, holding other variables constant.
+Start:  AIC=113.06
+miltcoup ~ oligarchy + pollib + parties + pctvote + popn + size + 
+    numelec + numregim
+
+            Df Deviance    AIC
+- numelec    1   28.430 111.24
+- numregim   1   29.059 111.87
+- size       1   29.238 112.05
+<none>           28.249 113.06
+- pctvote    1   30.572 113.38
+- popn       1   30.601 113.41
+- oligarchy  1   32.354 115.16
+- pollib     2   35.581 116.39
+- parties    1   35.311 118.12
+
+Step:  AIC=111.24
+miltcoup ~ oligarchy + pollib + parties + pctvote + popn + size + 
+    numregim
+
+            Df Deviance    AIC
+- numregim   1   29.081 109.89
+- size       1   29.452 110.26
+<none>           28.430 111.24
+- pctvote    1   30.590 111.40
+- popn       1   30.605 111.41
+- pollib     2   36.872 115.68
+- parties    1   35.773 116.58
+- oligarchy  1   36.595 117.40
+
+Step:  AIC=109.89
+miltcoup ~ oligarchy + pollib + parties + pctvote + popn + size
+
+            Df Deviance    AIC
+- size       1   30.040 108.85
+- popn       1   30.614 109.42
+<none>           29.081 109.89
+- pctvote    1   31.599 110.41
+- pollib     2   37.830 114.64
+- parties    1   36.304 115.11
+- oligarchy  1   40.291 119.10
+
+Step:  AIC=108.85
+miltcoup ~ oligarchy + pollib + parties + pctvote + popn
+
+            Df Deviance    AIC
+- popn       1   31.069 107.88
+<none>           30.040 108.85
+- pctvote    1   32.241 109.05
+- pollib     2   38.022 112.83
+- parties    1   37.547 114.36
+- oligarchy  1   40.468 117.28
+
+Step:  AIC=107.88
+miltcoup ~ oligarchy + pollib + parties + pctvote
+
+            Df Deviance    AIC
+- pctvote    1   32.822 107.63
+<none>           31.069 107.88
+- parties    1   37.547 112.36
+- pollib     2   39.762 112.57
+- oligarchy  1   48.196 123.00
+
+Step:  AIC=107.63
+miltcoup ~ oligarchy + pollib + parties
+
+            Df Deviance    AIC
+<none>           32.822 107.63
+- pollib     2   40.025 110.83
+- parties    1   38.162 110.97
+- oligarchy  1   49.458 122.27
+
+Call:
+glm(formula = miltcoup ~ oligarchy + pollib + parties, family = poisson(link = "log"), 
+    data = coup_data)
+
+Coefficients:
+                            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                 0.207981   0.445679   0.467   0.6407    
+oligarchy                   0.091466   0.022563   4.054 5.04e-05 ***
+pollibLimited civil rights -0.495414   0.475645  -1.042   0.2976    
+pollibFull civil rights    -1.112086   0.459492  -2.420   0.0155 *  
+parties                     0.022358   0.009098   2.458   0.0140 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 65.945  on 35  degrees of freedom
+Residual deviance: 32.822  on 31  degrees of freedom
+AIC: 107.63
+
+Number of Fisher Scoring iterations: 5
+
+Dispersion parameter for reduced model: 1.0157 
+Waiting for profiling to be done...
+[1] "Incidence Rate Ratios for reduced model with 95% CI:"
+                             IRR 2.5 % 97.5 %
+(Intercept)                1.231 0.462  2.734
+oligarchy                  1.096 1.049  1.146
+pollibLimited civil rights 0.609 0.253  1.692
+pollibFull civil rights    0.329 0.142  0.892
+parties                    1.023 1.004  1.040
+
+Model Comparison:
+Full model AIC: 113.06 
+Reduced model AIC: 107.63 
+AIC difference: 5.43 
+
+[1] "ANOVA comparison of models:"
+Analysis of Deviance Table
+
+Model 1: miltcoup ~ oligarchy + pollib + parties
+Model 2: miltcoup ~ oligarchy + pollib + parties + pctvote + popn + size + 
+    numelec + numregim
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        31     32.822                     
+2        26     28.249  5   4.5721   0.4703
+
+Interpretation of Reduced Poisson Regression Model:
+Significant predictors (p < 0.05):
+- oligarchy: positive effect (IRR = 1.096)
+- pollibFull civil rights: negative effect (IRR = 0.329)
+- parties: positive effect (IRR = 1.023)
+
+Comparison with the full model:
+The reduced model retained 4 predictors out of 9 from the full model.
+The removed variables did not significantly contribute to the model.
+The reduced model is more parsimonious and has a lower AIC, indicating better fit.
+
+[1] "Prediction data (with mean values for other predictors):"
+                pollib oligarchy  parties
+1      No civil rights  5.222222 17.08333
+2 Limited civil rights  5.222222 17.08333
+3    Full civil rights  5.222222 17.08333
+[1] "Predicted number of military coups by political liberalization level:"
+                pollib predicted_count
+1      No civil rights       2.9083520
+2 Limited civil rights       1.7721126
+3    Full civil rights       0.9564757
+
+Interpretation of Predictions by Political Liberalization Level:
+1. Countries with No civil rights are predicted to have the highest number of military coups (2.91 coups).
+2. Countries with Full civil rights are predicted to have the lowest number of military coups (0.96 coups).
+3. Moving from Full civil rights to No civil rights is associated with a 204.1% increase in the expected number of military coups.
+3. Moving from Full civil rights to Limited civil rights is associated with a 85.3% increase in the expected number of military coups.
+
+Summary of Findings for Exercise 2:
+1. The full Poisson regression model identified several factors associated with military coups.
+2. The backward selection process resulted in a more parsimonious model with better fit.
+3. Key predictors of military coups include:
+   - oligarchy: increases the expected number of coups
+   - pollibFull civil rights: decreases the expected number of coups
+   - parties: increases the expected number of coups
+4. Political liberalization level has a substantial impact on the expected number of coups,
+   with different levels showing notable variation in predicted coup counts.
+5. The model provides insights into the political and socioeconomic factors that
+   influence the stability of governments and vulnerability to military takeovers.

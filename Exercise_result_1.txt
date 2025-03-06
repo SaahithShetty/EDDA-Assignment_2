@@ -1,0 +1,202 @@
+> source("~/Documents/Jupyter/EDDA/Assignment_2/Exercise1.R")
+'data.frame':	1313 obs. of  5 variables:
+ $ Name    : chr  "Allen, Miss Elisabeth Walton" "Allison, Miss Helen Loraine" "Allison, Mr Hudson Joshua Creighton" "Allison, Mrs Hudson JC (Bessie Waldo Daniels)" ...
+ $ PClass  : chr  "1st" "1st" "1st" "1st" ...
+ $ Age     : num  29 2 30 25 0.92 47 63 39 58 71 ...
+ $ Sex     : chr  "female" "female" "male" "female" ...
+ $ Survived: int  1 0 0 0 1 1 1 0 1 0 ...
+[1] "Survival Counts by Passenger Class, Gender, and Survival Status:"
+, ,  = No
+
+     
+      female male
+  1st      9  120
+  2nd     13  148
+  3rd    132  441
+
+, ,  = Yes
+
+     
+      female male
+  1st    134   59
+  2nd     94   25
+  3rd     80   58
+
+[1] "Survival Rates (%) by Passenger Class and Gender:"
+   PClass    Sex Proportion
+7     1st female   93.70629
+8     2nd female   87.85047
+9     3rd female   37.73585
+10    1st   male   32.96089
+11    2nd   male   14.45087
+12    3rd   male   11.62325
+[1] "Variance Inflation Factors (check for multicollinearity):"
+           GVIF Df GVIF^(1/(2*Df))
+PClass 1.501144  2        1.106893
+Age    1.382584  1        1.175833
+Sex    1.102857  1        1.050170
+Interpretation: VIF values < 5 indicate no serious multicollinearity issues
+
+[1] "Number of potentially influential observations:"
+[1] 33
+`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'
+Setting levels: control = No, case = Yes
+Setting direction: controls < cases
+Waiting for profiling to be done...
+[1] "Odds Ratios with 95% Confidence Intervals:"
+                     OR       2.5 %     97.5 %
+(Intercept) 42.93391621 20.13246582 95.8405549
+PClass2nd    0.27473112  0.16374897  0.4544846
+PClass3rd    0.08034550  0.04606708  0.1364833
+Age          0.96158067  0.94706715  0.9758117
+Sexmale      0.07198073  0.04802524  0.1059260
+
+Enhanced Interpretation of Logistic Regression Results:
+1. Gender Effect: Being female dramatically increases survival odds by a factor of 13.9 
+   This is the strongest predictor in the model, showing that gender was the primary
+   determining factor for survival on the Titanic, confirming the 'women and children first' policy.
+
+2. Passenger Class Effect: Compared to 1st class passengers:
+   - 2nd class passengers had 0.27 times the odds of survival
+   - 3rd class passengers had 0.08 times the odds of survival
+   This substantial effect confirms that social class significantly impacted survival chances,
+   with lower-class passengers having dramatically reduced odds of survival.
+
+3. Age Effect: For each additional year of age, the odds of survival decreased by 3.8 %
+   While statistically significant, this effect is much smaller compared to gender and class.
+   Over a 50-year age span, this would multiply the odds by approximately 0.14 .
+
+Overall Model Performance:
+- The model has good discriminative ability (AUC = 0.853 )
+- The model explains 32.2 % of the deviance
+- All predictors are statistically significant (p < 0.05)
+
+
+Justification for Model Selection:
+After testing models with different interactions, I chose the model with the Age:Sex interaction because:
+1. The Age:Sex interaction term showed statistical significance (p < 0.05)
+2. The model with Age:Sex interaction provided better fit based on AIC and the likelihood ratio test
+3. The interaction makes practical sense - age affected survival differently for men and women
+4. The effect of gender varies with age, with the gender gap possibly being smaller for children
+
+[1] "Predicted Probability of Survival for a 55-year-old person:"
+  PClass    Sex Age SurvivalProb
+1    1st   male  55   0.14495247
+2    2nd   male  55   0.03495485
+3    3rd   male  55   0.01178897
+4    1st female  55   0.94739747
+5    2nd female  55   0.79373500
+6    3rd female  55   0.55896778
+
+Proposed Method for Survival Prediction:
+1. Method: I would use the logistic regression model with Age:Sex interaction to predict survival.
+2. Implementation: 
+   - Split the data into training (70%) and test (30%) sets
+   - Fit the model on the training data
+   - Predict survival on the test data using a threshold of 0.5 on predicted probabilities
+3. Quality Measures:
+   - Classification accuracy: Percentage of correctly classified observations
+   - Sensitivity: Percentage of actual survivors correctly identified
+   - Specificity: Percentage of actual non-survivors correctly identified
+   - Area Under the ROC Curve (AUC): Measures overall discriminative ability
+   - Cross-validation: Use k-fold cross-validation to ensure results are robust
+
+Sample Implementation Results (for illustration only):
+Confusion Matrix:
+         Actual
+Predicted  No Yes
+      No  105  29
+      Yes  21  72
+
+Accuracy: 0.78 
+Sensitivity: 0.713 
+Specificity: 0.833 
+
+[1] "Chi-square Test for Passenger Class and Survival:"
+
+	Pearson's Chi-squared test
+
+data:  table(titanic_data$PClass, titanic_data$Survived)
+X-squared = 172.3, df = 2, p-value < 2.2e-16
+
+[1] "Chi-square Test for Gender and Survival:"
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  table(titanic_data$Sex, titanic_data$Survived)
+X-squared = 329.84, df = 1, p-value < 2.2e-16
+
+[1] "Contingency Table: Passenger Class vs. Survival"
+     
+       No Yes
+  1st 129 193
+  2nd 161 119
+  3rd 573 138
+[1] "Row Percentages:"
+     
+        No  Yes
+  1st 40.1 59.9
+  2nd 57.5 42.5
+  3rd 80.6 19.4
+[1] "Contingency Table: Gender vs. Survival"
+        
+          No Yes
+  female 154 308
+  male   709 142
+[1] "Row Percentages:"
+        
+           No  Yes
+  female 33.3 66.7
+  male   83.3 16.7
+
+Comparison of Approaches:
+The contingency table approach is not wrong, but it has limitations compared to logistic regression.
+
+Advantages of Logistic Regression:
+1. Can model multiple predictors simultaneously (PClass, Age, Sex)
+2. Quantifies the effect size (odds ratios) for each predictor
+3. Controls for confounding factors when estimating effects
+4. Can include continuous variables like Age
+5. Can model interactions between predictors
+
+Advantages of Contingency Table Tests:
+1. Simpler to implement and interpret
+2. Makes fewer assumptions about the data
+3. Directly assesses association between categorical variables
+4. Can be used with small sample sizes
+5. Good for initial exploration of relationships
+
+Disadvantages of Logistic Regression (relative to contingency tables):
+1. More complex to interpret
+2. Requires checking model assumptions
+3. More sensitive to missing data
+4. Can be affected by separation issues in small datasets
+
+Disadvantages of Contingency Table Tests (relative to logistic regression):
+1. Cannot control for confounding variables
+2. Cannot model continuous predictors like Age
+3. Cannot estimate effect sizes with confidence intervals
+4. Cannot model complex relationships and interactions
+5. Limited to bivariate relationships (one predictor at a time)
+
+Summary of Generated Plots:
+1: plots/01_gender_survival_count.png
+2: plots/02_gender_survival_percent.png
+3: plots/03_class_survival_count.png
+4: plots/04_class_survival_percent.png
+5: plots/05_age_boxplot.png
+6: plots/06_gender_class_survival.png
+7: plots/07_age_gender_hist.png
+8: plots/08_model_diagnostics.png
+9: plots/09_logit_age_plot.png
+10: plots/10_calibration_plot.png
+11: plots/11_roc_curve.png
+12: plots/12_forest_plot.png
+13: plots/13_predictions_55yo.png
+14: plots/14_age_predictions.png
+15: plots/15_confusion_matrix.png
+16: plots/16_mosaic_class.png
+17: plots/17_mosaic_gender.png
+18: plots/18_chi_square_results.png
+There were 14 warnings (use warnings() to see them)
